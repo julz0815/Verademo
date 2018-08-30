@@ -482,7 +482,7 @@ public class BlabController {
 			Class.forName("com.mysql.jdbc.Driver");
 			connect = DriverManager.getConnection(Constants.create().getJdbcConnectionString());
 
-			// Find the Blabbers ---
+			// Find the Blabbers
 			logger.info(blabbersSql);
 			blabberQuery = connect.prepareStatement(blabbersSql);
 			blabberQuery.setString(1, username);
