@@ -13,38 +13,14 @@ maven:
     artifacts:
         paths:
             - target/
-
-development-upload-for-sast:
-    stage: scan
-    only:
-        - development
+          
+greenlight scan:
     script:
-        - java -jar $HOME/helpers/VeracodeJavaAPI.jar -vid ${TEAM_ANALYSISCENTER_ID} -vkey ${TEAM_ANALYSISCENTER_KEY}
-          -action UploadAndScan -appname "Verademo" -createprofile false -autoscan true -sandboxname "gitlab/development"
-          -filepath ./target/verademo.war -version "Job ${CI_JOB_ID} in pipeline ${CI_PIPELINE_ID}"
-    allow_failure: true
-    
-release-upload-for-sast:
-    stage: scan
-    only:
-        - release
-    script:
-        - java -jar $HOME/helpers/VeracodeJavaAPI.jar -vid ${TEAM_ANALYSISCENTER_ID} -vkey ${TEAM_ANALYSISCENTER_KEY}
-          -action UploadAndScan -appname "Verademo" -createprofile false -autoscan true -sandboxname "gitlab/release"
-          -filepath ./target/verademo.war -version "Job ${CI_JOB_ID} in pipeline ${CI_PIPELINE_ID}"
-    allow_failure: true
-    
-policy-upload-for-sast:
-    image: docker-ro.laputa.veracode.io/agora/buildbox:centos7-m3-python-latest
-    stage: scan
-    only:
-        - schedules
-        - master
-    before_script:
-        - pyenv install 3.6.1
-        - pyenv local 3.6.1
-        - git clone https://ccampbell@gitlab.laputa.veracode.io/ccampbell/upload-and-scan.git
-    script:
-        - python upload-and-scan/uploadandscan.py $HOME/helpers/VeracodeJavaAPI.jar ${TEAM_ANALYSISCENTER_ID} ${TEAM_ANALYSISCENTER_KEY}
-          --breakthebuild --waitmax 3600 --waitinterval 60
-          -appname "Verademo" -createprofile false -autoscan true -filepath ./target/verademo.war -version "Job ${CI_JOB_ID} in pipeline ${CI_PIPELINE_ID}"
+        - curl -O https://downloads.veracode.com/securityscan/gl-scanner-java-LATEST.zip
+        - unzip gl-scanner-java-LATEST.zip gl-scanner-java.jar
+        - java -jar gl-scanner-java.jar
+            --api_id 5c0cbad0ad195c9d5ad46f4fb85dbc16
+            --api_secret_key b7d27211e0787151f7a215a932b45a64119b4ab96412489309e834e0c5c86dd1ceb3c0583a1ad32c188c362ac2005a8b819e2f2ed9a9765913f4d6bda647fa16
+            --project_name "${CI_PROJECT_NAME}"
+            --project_url ${CI_PROJECT_URL}
+            --project_ref ${CI_COMMIT_REF_NAME}
