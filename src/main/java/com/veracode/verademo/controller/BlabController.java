@@ -488,7 +488,7 @@ public class BlabController {
 			blabberQuery.setString(1, username);
 			blabberQuery.setString(2, username);
 			ResultSet blabbersResults = blabberQuery.executeQuery();
-			/* END BAD CODE */
+			/* END BAD CODE ----*/
 
 			List<Blabber> blabbers = new ArrayList<Blabber>();
 			while (blabbersResults.next()) {
