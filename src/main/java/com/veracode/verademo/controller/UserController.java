@@ -498,7 +498,7 @@ public class UserController {
 				events.add(userHistoryResult.getString(1));
 			}
 
-			// Get the users information
+			// Get the users information---
 			String sql = "SELECT username, real_name, blab_name FROM users WHERE username = '" + username + "'";
 			logger.info(sql);
 			myInfo = connect.prepareStatement(sql);
