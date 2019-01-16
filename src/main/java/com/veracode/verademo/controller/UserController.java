@@ -157,7 +157,7 @@ public class UserController {
 			connect = DriverManager.getConnection(Constants.create().getJdbcConnectionString());
 
 			/* START BAD CODE */
-			// Execute the query
+			// Execute the query hdghfdgfdgfd
 			logger.info("Creating the Statement");
 			String sqlQuery = "select username, password, password_hint, created_at, last_login, real_name, blab_name from users where username='"
 					+ username + "' and password='" + md5(password) + "';";
