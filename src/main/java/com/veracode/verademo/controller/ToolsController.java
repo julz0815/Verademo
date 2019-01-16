@@ -51,7 +51,7 @@ public class ToolsController {
 		String output = "";
 		Process proc;
 		try {
-			/* START BAD CODE ssdfg-----*/
+			/* START BAD CODE ssdfg */
 			if (System.getProperty("os.name").startsWith("Windows")) {
 				proc = Runtime.getRuntime().exec("cmd.exe /c ping " + host);
 			}
