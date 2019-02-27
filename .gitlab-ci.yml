@@ -5,7 +5,7 @@ stages:
 build_job:
   stage: build
   script:
-    - maven clean verify
+    - mvn clean verify
   artifacts:
     name: ${CI_PROJECT_NAME}_${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHA}_build
     paths:
