@@ -90,7 +90,7 @@ public class ResetController {
 
 		Random rand = new Random();
 
-		// Drop existing tables and recreate from schema file asfdadsf
+		// Drop existing tables and recreate from schema file
 		recreateDatabaseSchema();
 
 		try {
