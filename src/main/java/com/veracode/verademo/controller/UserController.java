@@ -505,7 +505,7 @@ public class UserController {
 			ResultSet myInfoResults = myInfo.executeQuery();
 			myInfoResults.next();
 
-			// Send these values to our View
+			// Send these values to our View hjgfhjghgd
 			model.addAttribute("hecklers", hecklers);
 			model.addAttribute("events", events);
 			model.addAttribute("username", myInfoResults.getString("username"));
