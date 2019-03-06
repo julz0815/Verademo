@@ -22,12 +22,6 @@ greenlight_job:
   image: openjdk:8-jre
   dependencies:
     - build_job
-  artifacts:
-    name: verademo_julian_10_greenlight-results
-    paths:
-      - results.json
-    expire_in: 1 week
-    when: always
   script:
     - curl -O https://downloads.veracode.com/securityscan/gl-scanner-java-LATEST.zip
     - unzip gl-scanner-java-LATEST.zip gl-scanner-java.jar
@@ -36,3 +30,7 @@ greenlight_job:
       --api_secret_key "4072b8357a06e8fc736b5e2139c90b2d9862feab7d4897da1c94ef5f04a72c36525889f45e48bae6c9a1311bd1134aa322d3cf0aba00df02a76bd3f60c7a7bb6"
       --build_dir "target/classes/"
       --source-dir "src/main/java/"
+  artifacts:
+    name: verademo_julian_10_greenlight-results
+    paths:
+      - results.json
