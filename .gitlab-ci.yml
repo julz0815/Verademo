@@ -3,7 +3,7 @@ stages:
   - greenlight
 
 build_job:
-  image: maven
+  image: maven:3.6.0-jdk-8
   stage: build
   script:
     - mvn clean package
