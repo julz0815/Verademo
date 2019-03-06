@@ -3,6 +3,7 @@ stages:
   - greenlight
 
 build_job:
+  image: maven
   stage: build
   script:
     - mvn clean package
@@ -13,12 +14,12 @@ build_job:
     expire_in: 1 week
   cache:
     paths:
-      - build/
       - target/
     
   
 greenlight_job:
-  stage: greenlight
+  stage: greenlighat
+  image: openjdk:8-jre
   dependencies:
     - build_job
   artifacts:
