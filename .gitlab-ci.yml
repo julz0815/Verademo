@@ -18,10 +18,10 @@ build_job:
     
   
 greenlight_job:
-  stage: greenlighat
+  stage: greenlight
   image: openjdk:8-jre
   dependencies:
-    - build_job
+    - build
   artifacts:
     name: verademo_julian_10_greenlight-results
     paths:
