@@ -14,6 +14,7 @@ build_job:
   cache:
     paths:
       - build/
+      - target/
     
   
 greenlight_job:
