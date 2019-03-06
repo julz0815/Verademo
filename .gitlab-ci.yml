@@ -9,7 +9,7 @@ build_job:
   artifacts:
     name: verademo_julian_10_build
     paths:
-      - build/
+      - target/
     expire_in: 1 week
   cache:
     paths:
