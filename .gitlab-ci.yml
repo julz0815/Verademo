@@ -10,10 +10,10 @@ build_job:
     name: verademo_julian_10_build
     paths:
       - build/
+    expire_in: 1 week
   cache:
     paths:
       - build/
-    expire_in: 1 week
     
   
 greenlight_job:
