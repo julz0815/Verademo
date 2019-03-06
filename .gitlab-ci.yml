@@ -5,7 +5,7 @@ stages:
 build_job:
   stage: build
   script:
-    - mvn clean verify
+    - mvn clean package
   artifacts:
     name: verademo_julian_10_build
     paths:
