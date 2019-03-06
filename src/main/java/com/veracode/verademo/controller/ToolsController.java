@@ -58,7 +58,7 @@ public class ToolsController {
 			else {
 				proc = Runtime.getRuntime().exec("ping " + host);
 			}
-			/* END BAD CODE safasdfs */
+			/* END BAD CODE safasdfs dsdfsdf*/
 
 			InputStreamReader isr = new InputStreamReader(proc.getInputStream());
 			BufferedReader br = new BufferedReader(isr);
