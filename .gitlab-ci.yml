@@ -43,3 +43,4 @@ greenlight_job:
     paths:
       - results.json
       - results.txt
+    when: always
