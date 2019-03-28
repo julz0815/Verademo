@@ -48,6 +48,7 @@ greenlight_job:
 
 veracode-policy-scan:
     stage: scan
+    image: ctcampbelldocker/veracode-ci-examples
     only:
         - schedules
         - master
