@@ -48,7 +48,7 @@ greenlight_job:
 
 veracode-policy-scan:
     stage: scan
-    image: ctcampbelldocker/veracode-ci-examples
+    image: openjdk:8-jre
     only:
         - schedules
         - master
