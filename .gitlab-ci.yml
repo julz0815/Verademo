@@ -48,7 +48,7 @@ greenlight_job:
 
 veracode-policy-scan:
     stage: scan
-    image: maven:3.6.0-jdk-8
+    image: openjdk:10
     only:
         - schedules
         - master
