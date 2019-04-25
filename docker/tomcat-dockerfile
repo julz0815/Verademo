@@ -1,0 +1,2 @@
+FROM rightctrl/tomcat
+COPY target/verademo.war /opt/tomcat/webapps/
