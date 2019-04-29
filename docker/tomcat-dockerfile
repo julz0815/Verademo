@@ -1,1 +1,2 @@
 FROM rightctrl/tomcat
+RUN apt-get install python
