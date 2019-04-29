@@ -1,2 +1,1 @@
 FROM juliantotzek/verademo1-tomcat
-COPY var/jenkins_home/workspace/docker/target/verademo.war /usr/local/tomcat/webapps/
