@@ -1,1 +1,3 @@
 FROM juliantotzek/verademo-tomcat
+USER root
+CMD systemctl start tomcat
