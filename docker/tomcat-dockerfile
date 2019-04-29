@@ -1,2 +1,2 @@
 FROM rightctrl/tomcat
-RUN yum install python
+RUN yum -y install python
