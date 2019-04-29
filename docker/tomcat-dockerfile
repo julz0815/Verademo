@@ -1,2 +1,3 @@
-FROM rightctrl/tomcat
-RUN yum update -y && yum -y install python
+FROM 7rack/tomcat-7-centos7
+USER root
+RUN yum update -y && yum install -y python
