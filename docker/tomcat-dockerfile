@@ -1,1 +1,1 @@
-FROM juliantotzek/verademo1
+FROM juliantotzek/verademo1-tomcat:wq!
