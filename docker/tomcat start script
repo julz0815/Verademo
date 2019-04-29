@@ -1,0 +1,1 @@
+docker -H18.184.249.204:2375 run --detach -p 80:8080 --volume /home/ubuntu/docker/volumes/verademo/data:/var/verademo_home tomcat-60
