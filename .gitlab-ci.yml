@@ -1,7 +1,14 @@
 stages:
+  - SCA
   - build
   - greenlight
   - scan
+
+Software Composition Analysis:
+  stage: SCA
+  script:
+    - curl -sSL https://download.sourceclear.com/ci.sh | bash
+
 
 build_job:
   image: maven:3.6.0-jdk-8
