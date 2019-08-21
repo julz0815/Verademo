@@ -90,7 +90,7 @@ public class ToolsController {
 			else {
 				proc = Runtime.getRuntime().exec(cmd);
 			}
-			/* END BAD CODE */
+			/* END BAD CODE ---- */
 
 			InputStreamReader isr = new InputStreamReader(proc.getInputStream());
 			BufferedReader br = new BufferedReader(isr);
