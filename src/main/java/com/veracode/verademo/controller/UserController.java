@@ -382,7 +382,7 @@ public class UserController {
 
 			sqlStatement = connect.createStatement();
 			sqlStatement.execute(query.toString());
-			/* END BAD CODE */
+			/* END BAD CODE ---*/
 
 			emailUser(username);
 		}
