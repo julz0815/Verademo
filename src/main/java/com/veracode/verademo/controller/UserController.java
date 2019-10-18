@@ -305,7 +305,7 @@ public class UserController {
 		logger.info("Entering processRegister");
 		httpRequest.getSession().setAttribute("username", username);
 
-		// Get the Database Connection
+		// Get the Database Connection ----
 		logger.info("Creating the Database connection");
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
