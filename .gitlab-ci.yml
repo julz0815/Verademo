@@ -40,8 +40,8 @@ greenlight_job:
     - curl -O https://downloads.veracode.com/securityscan/gl-scanner-java-LATEST.zip
     - unzip gl-scanner-java-LATEST.zip gl-scanner-java.jar
     - java -jar gl-scanner-java.jar
-      --api_id ${VERACODE_API_ID}
-      --api_secret_key ${VERACODE_API_KEY}
+      --api_id $VERACODE_API_ID
+      --api_secret_key $VERACODE_API_KEY
       --build_dir "target/classes/"
       --source-dir "src/main/java/"
       --issue_details=true
@@ -62,6 +62,6 @@ veracode-policy-scan:
     before_script:
         - wget -q -O veracode-wrapper.jar https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/${VERACODE_WRAPPER_VERSION}/vosp-api-wrappers-java-${VERACODE_WRAPPER_VERSION}.jar
     script:
-        - java -jar --add-modules java.se.ee veracode-wrapper.jar -vid ${VERACODE_API_ID} -vkey ${VERACODE_API_KEY}
-          -action UploadAndScan -appname "${CI_PROJECT_NAME}" -createprofile true -autoscan true
-          -filepath target/verademo.war -version "job ${CI_JOB_ID} in pipeline ${CI_PIPELINE_ID}"
+        - java -jar --add-modules java.se.ee veracode-wrapper.jar -vid $VERACODE_API_ID -vkey $VERACODE_API_KEY
+          -action UploadAndScan -appname "$CI_PROJECT_NAME" -createprofile true -autoscan true
+          -filepath target/verademo.war -version "job $CI_JOB_ID in pipeline $CI_PIPELINE_ID"
