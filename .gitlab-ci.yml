@@ -40,12 +40,12 @@ greenlight_job:
     - curl -O https://downloads.veracode.com/securityscan/gl-scanner-java-LATEST.zip
     - unzip gl-scanner-java-LATEST.zip gl-scanner-java.jar
     - java -jar gl-scanner-java.jar
-      --api_id ${VERACODE_API_ID}
-      --api_secret_key ${VERACODE_API_KEY}
-      --build_dir "target/classes/"
-      --source-dir "src/main/java/"
-      --issue_details=true
-      --summary_output=true
+      -i ${VERACODE_API_ID}
+      -k ${VERACODE_API_KEY}
+      -b "target/classes/"
+      -s "src/main/java/"
+      -id true
+      -so true
   artifacts:
     name: verademo_julian_10_greenlight-results
     paths:
