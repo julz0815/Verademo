@@ -68,11 +68,10 @@ jobs:
     - uses: wei/curl@master
       with:
         args: -O -sSL https://download.sourceclear.com/ci.sh
-    - name: set envirnonment variabls 
       env:
         SRCCLR_API_TOKEN: ${{secrets.SRCCLR_API_TOKEN}}
-        run: sudo chmod 777 ci.sh
-        run: ./ci.sh | bash -s scan . --update-advisor 2>&1 | tee sca_output.txt
+    - run: sudo chmod 777 ci.sh
+    - run: ./ci.sh | bash -s scan . --update-advisor 2>&1 | tee sca_output.txt
     - uses: actions/upload-artifact@v1
       with:
         name: SCAScanResults
