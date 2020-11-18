@@ -11,12 +11,12 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a job to build and submit pipeline scan, you will need to customize the build process accordingly and make sure the artifact you build is used as the file input to the pipeline scan file parameter
-  build-and-pipeline-scan:
+  build-and-security-scan:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     steps:
     
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it and copies all sources into ZIP file for submitting for analysis. Replace this section with your applications build steps
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it, compiles with maven and copies the .war file for submitting for analysis. Replace this section with your applications build steps
     - uses: actions/checkout@v2
     - uses: actions/setup-java@v1
       with: 
@@ -40,6 +40,7 @@ jobs:
         args: -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
     - run: unzip -o pipeline-scan-LATEST.zip
     
+    # run the Veracode Pipeline scan
     - uses: actions/setup-java@v1
       with:
         java-version: 1.8
@@ -49,6 +50,8 @@ jobs:
       with:
         name: ScanResults
         path: results.json
+        
+    # Convert Pipeline scan results to the SARFI format    
     - name: Convert pipeline scan output to SARIF format 
       id: convert
       uses: veracode/veracode-pipeline-scan-results-to-sarif@v0.1.5
@@ -60,3 +63,8 @@ jobs:
       with:
         # Path to SARIF file relative to the root of the repository
         sarif_file: veracode-results.sarif
+        
+    # Run a Software Composition Analysis scan
+    - uses: wei/curl@master
+      with:
+        args: -sSL https://download.sourceclear.com/ci.sh | bash -s scan . --update-advisor
