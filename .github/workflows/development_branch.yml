@@ -65,7 +65,7 @@ jobs:
         sarif_file: veracode-results.sarif
         
     # Run a Software Composition Analysis scan
-    - run: curl -sSL https://download.sourceclear.com/ci.sh/ci.sh | bash -s scan . --update-advisor 2>&1 | tee sca_output.txt
+    - run: curl -sSL https://download.sourceclear.com/ci.sh | bash -s scan . --update-advisor 2>&1 | tee sca_output.txt
       env:
         SRCCLR_API_TOKEN: ${{secrets.SRCCLR_API_TOKEN}}
     - uses: actions/upload-artifact@v1
