@@ -45,7 +45,16 @@ jobs:
         vid: '${{ secrets.VERACODE_API_ID }}'
         vkey: '${{ secrets.VERACODE_API_KEY }}'
         scantimeout: 15
-        
+
+    - name: Veracode Flaw Importer
+      uses: julz0815/veracode_flaw_importer@main
+      env:
+        VERACODE_API_ID: ${{ secrets.VERACODE_API_ID }}
+        VERACODE_API_KEY: ${{ secrets.VERACODE_API_KEY }}
+      id: import_flaws
+      with:
+        app_name: 'Verademo'
+
     # Run a Software Composition Analysis scan
     - run: curl -sSL https://download.sourceclear.com/ci.sh | bash -s scan . --update-advisor 2>&1 | tee sca_output.txt
       env:
