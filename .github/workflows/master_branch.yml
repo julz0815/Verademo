@@ -47,7 +47,7 @@ jobs:
         scantimeout: 15
 
     - name: Veracode Flaw Importer
-      continue-on-error: true
+      if: ${{ failure() }}
       uses: julz0815/veracode_flaw_importer@main
       env:
         VERACODE_API_ID: ${{ secrets.VERACODE_API_ID }}
