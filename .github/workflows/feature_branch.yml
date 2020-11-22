@@ -36,6 +36,7 @@ jobs:
     
     # Upload and Scan with Veracode (Sandbox scan)
     - name: Veracode Upload and Scan Action Step
+      continue-on-error: true
       uses: veracode/veracode-uploadandscan-action@master
       id: upload_and_scan
       with:
