@@ -49,7 +49,7 @@ jobs:
         scantimeout: 15
         
     - name: Veracode Flaw Importer
-      uses: julz0815/veracode-flaw-importer-action@main
+      uses: julz0815/veracode_flaw_importer-action@main
       id: import_flaws
       with:
         app_name: 'Verademo'
