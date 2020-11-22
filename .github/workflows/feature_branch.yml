@@ -48,8 +48,8 @@ jobs:
         sandboxname: 'Github - ${{ github.base_ref }}'
         scantimeout: 15
         
-    - name: Veracode Flaw Imprter
-      uses: julz0815/veracde-flaw-importer-action@master
+    - name: Veracode Flaw Importer
+      uses: julz0815/veracode-flaw-importer-action@master
       id: import_flaws
       with:
         app_name: 'Verademo'
