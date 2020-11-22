@@ -52,8 +52,8 @@ jobs:
       if: ${{ failure() }}
       uses: julz0815/veracode_flaw_importer@main
       env:
-        VERACODE_API_ID: ${{ secrets.VERACODE_API_ID }}
-        VERACODE_API_KEY: ${{ secrets.VERACODE_API_KEY }}
+        VERACODE_API_KEY_ID: '${{ secrets.VERACODE_API_ID }}'
+        VERACODE_API_KEY_SECRET: '${{ secrets.VERACODE_API_KEY }}'}
       id: import_flaws
       with:
         app_name: 'Verademo'
