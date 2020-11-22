@@ -48,6 +48,7 @@ jobs:
         sandboxname: 'Github - ${{ github.base_ref }}'
         scantimeout: 15
         
+    # Import flaws into code scanning alerts
     - name: Veracode Flaw Importer
       if: ${{ failure() }}
       uses: julz0815/veracode_flaw_importer@main
