@@ -59,7 +59,7 @@ jobs:
       id: import_flaws
       with:
         app_name: 'Verademo'
-        sandbox_name: 'Github - ${{ github.base_ref }}'
+        sandbox_name: 'Github - ${{ github.ref }}'
         
     - uses: actions/upload-artifact@master
       if: ${{ failure() }}
