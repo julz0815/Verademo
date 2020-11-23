@@ -45,7 +45,29 @@ jobs:
         vid: '${{ secrets.VERACODE_API_ID }}'
         vkey: '${{ secrets.VERACODE_API_KEY }}'
         scantimeout: 15
-        
+  
+    # Import flaws into code scanning alerts
+    - name: Veracode Flaw Importer
+      if: ${{ failure() }}
+      uses: julz0815/veracode_flaw_importer@main
+      env:
+        VERACODE_API_KEY_ID: '${{ secrets.VERACODE_API_ID }}'
+        VERACODE_API_KEY_SECRET: '${{ secrets.VERACODE_API_KEY }}'
+      id: import_flaws
+      with:
+        app_name: 'Verademo'
+
+    - uses: actions/upload-artifact@master
+      if: ${{ failure() }}
+      with:
+        name: flaws
+        path: /home/runner/work/veracode_flaw_importer/veracode_flaw_importer/fullResults.json
+    - uses: github/codeql-action/upload-sarif@v1
+      if: ${{ failure() }}
+      with:
+        # Path to SARIF file relative to the root of the repository
+        sarif_file: fullResults.json
+
     # Run a Software Composition Analysis scan
     - run: curl -sSL https://download.sourceclear.com/ci.sh | bash -s scan . --update-advisor 2>&1 | tee sca_output.txt
       env:
