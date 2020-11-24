@@ -45,8 +45,9 @@ jobs:
         vid: '${{ secrets.VERACODE_API_ID }}'
         vkey: '${{ secrets.VERACODE_API_KEY }}'
         createsandbox: true
-        sandboxname: 'Github - ${{ github.base_ref }}'
+        sandboxname: 'Github - ${{ github.ref }}'
         scantimeout: 15
+        
         
         
     # Import flaws into code scanning alerts
@@ -59,13 +60,13 @@ jobs:
       id: import_flaws
       with:
         app_name: 'Verademo'
-        sandbox_name: 'Github - ${{ github.base_ref }}'
+        sandbox_name: 'Github - ${{ github.ref }}'
         
     - uses: actions/upload-artifact@master
       if: ${{ failure() }}
       with:
         name: flaws
-        path: /home/runner/work/veracode_flaw_importer/veracode_flaw_importer/fullResults.json
+        path: /home/runner/work/Verademo/Verademo/fullResults.json
     - uses: github/codeql-action/upload-sarif@v1
       if: ${{ failure() }}
       with:
