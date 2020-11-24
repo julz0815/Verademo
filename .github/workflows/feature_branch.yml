@@ -49,6 +49,7 @@ jobs:
         scantimeout: 15
         
         
+        
     # Import flaws into code scanning alerts
     - name: Veracode Flaw Importer
       if: ${{ failure() }}
@@ -59,7 +60,7 @@ jobs:
       id: import_flaws
       with:
         app_name: 'Verademo'
-        sandbox_name: 'Github - ${{ github.base_ref }}'
+        sandbox_name: 'Github - ${{ github.ref }}'
         
     - uses: actions/upload-artifact@master
       if: ${{ failure() }}
