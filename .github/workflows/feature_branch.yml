@@ -46,32 +46,38 @@ jobs:
         vkey: '${{ secrets.VERACODE_API_KEY }}'
         createsandbox: true
         sandboxname: 'Github - ${{ github.ref }}'
-        scantimeout: 15
+    - name: Invoke deployment hook
+      uses: distributhor/workflow-webhook@v1
+      env:
+        webhook_type: 'json-extended'
+        webhook_url: <WEBHOOK_URL>  // the endpoint URL collected at stage 7
+        webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
+        data: '{"commit":"${{github.sha}}","run_id":"${{github.run_id}}","veracode_app_name":"Verademo","veracode_sandbox_name":"${{ github.ref }}"}' 
         
         
         
     # Import flaws into code scanning alerts
-    - name: Veracode Flaw Importer
-      if: ${{ failure() }}
-      uses: julz0815/veracode_flaw_importer@main
-      env:
-        VERACODE_API_KEY_ID: '${{ secrets.VERACODE_API_ID }}'
-        VERACODE_API_KEY_SECRET: '${{ secrets.VERACODE_API_KEY }}'
-      id: import_flaws
-      with:
-        app_name: 'Verademo'
-        sandbox_name: 'Github - ${{ github.ref }}'
+#    - name: Veracode Flaw Importer
+#      if: ${{ failure() }}
+#      uses: julz0815/veracode_flaw_importer@main
+#      env:
+#        VERACODE_API_KEY_ID: '${{ secrets.VERACODE_API_ID }}'
+#        VERACODE_API_KEY_SECRET: '${{ secrets.VERACODE_API_KEY }}'
+#      id: import_flaws
+#      with:
+#        app_name: 'Verademo'
+#        sandbox_name: 'Github - ${{ github.ref }}'
         
-    - uses: actions/upload-artifact@master
-      if: ${{ failure() }}
-      with:
-        name: flaws
-        path: /home/runner/work/Verademo/Verademo/fullResults.json
-    - uses: github/codeql-action/upload-sarif@v1
-      if: ${{ failure() }}
-      with:
-        # Path to SARIF file relative to the root of the repository
-        sarif_file: fullResults.json
+#    - uses: actions/upload-artifact@master
+#      if: ${{ failure() }}
+#      with:
+#        name: flaws
+#        path: /home/runner/work/Verademo/Verademo/fullResults.json
+#    - uses: github/codeql-action/upload-sarif@v1
+#      if: ${{ failure() }}
+#      with:
+#        # Path to SARIF file relative to the root of the repository
+#        sarif_file: fullResults.json
         
         
     # Run a Software Composition Analysis scan
