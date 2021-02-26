@@ -51,7 +51,7 @@ jobs:
       uses: distributhor/workflow-webhook@v1
       env:
         webhook_type: 'json-extended'
-        webhook_url: <WEBHOOK_URL>  // the endpoint URL collected at stage 7
+        webhook_url: https://github.com/settings/installations/14930719
         webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
         data: '{"commit":"${{github.sha}}","run_id":"${{github.run_id}}","veracode_app_name":"Verademo","veracode_sandbox_name":"${{ github.ref }}"}' 
         
