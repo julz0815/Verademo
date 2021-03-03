@@ -47,13 +47,14 @@ jobs:
         createsandbox: true
         sandboxname: 'Github - ${{ github.ref }}'
 
+
     - name: Invoke deployment hook
       uses: distributhor/workflow-webhook@v1
       env:
         webhook_type: 'json-extended'
         webhook_url: https://a6mp4czm6k.execute-api.eu-central-1.amazonaws.com/dev/github
         webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
-        data: '{"commit":"${{github.sha}}","run_id":"${{github.run_id}}","veracode_app_name":"Verademo","veracode_sandbox_name":"${{ github.ref }}"}' 
+        data: '{"commit":"${{github.sha}}","run_id":"${{github.run_id}}","veracode_app_name":"Verademo","veracode_sandbox_name":"Github - ${{ github.ref }}"}' 
         
         
         
