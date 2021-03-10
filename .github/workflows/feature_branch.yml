@@ -1,11 +1,13 @@
 name: Feature Branch Workflow
 
 
+
 on:
   push:
     branches: [ feature ]
   pull_request:
     branches: [ feature ]
+
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -36,7 +38,7 @@ jobs:
     
     # Upload and Scan with Veracode (Sandbox scan)
     - name: Veracode Upload and Scan Action Step
-      uses: veracode/veracode-uploadandscan-action@master
+      uses: veracode/veracode-uploadandscan-action@0.2.1
       id: upload_and_scan
       with:
         appname: 'Verademo'
@@ -47,13 +49,14 @@ jobs:
         createsandbox: true
         sandboxname: 'Github - ${{ github.ref }}'
 
+
     - name: Invoke deployment hook
       uses: distributhor/workflow-webhook@v1
       env:
         webhook_type: 'json-extended'
         webhook_url: https://a6mp4czm6k.execute-api.eu-central-1.amazonaws.com/dev/github
         webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
-        data: '{"commit":"${{github.sha}}","run_id":"${{github.run_id}}","veracode_app_name":"Verademo","veracode_sandbox_name":"${{ github.ref }}"}' 
+        data: '{"commit":"${{github.sha}}","run_id":"${{github.run_id}}","veracode_app_name":"Verademo","veracode_sandbox_name":"Github - ${{ github.ref }}"}' 
         
         
         
