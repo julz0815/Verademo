@@ -36,7 +36,7 @@ The simplest way to aquire these on MacOS is via [Homebrew](http://brew.sh/). In
 
 ### Database
 
-Set up a database in MySQL called `blab` with a user of `blab` and password `z2^E6J4$;u;d`
+Set up a database in MySQL called `blab` with a user of `blab` and password `z2^E6J4$;u;d`. 
  
 ## Run
 
