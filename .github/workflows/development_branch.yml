@@ -44,12 +44,16 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - run: java -jar pipeline-scan.jar --veracode_api_id "${{secrets.VERACODE_API_ID}}" --veracode_api_key "${{secrets.VERACODE_API_KEY}}" --fail_on_severity="Very High, High" --file target/verademo.war
+    - run: java -jar pipeline-scan.jar --veracode_api_id "${{secrets.VERACODE_API_ID}}" --veracode_api_key "${{secrets.VERACODE_API_KEY}}" --fail_on_severity="Very High, High" --file target/verademo.war -bf pipeline-basline.json -fjf filtered_results.json 
       continue-on-error: true
     - uses: actions/upload-artifact@v1
       with:
         name: PipelineScanResults
         path: results.json
+    - uses: actions/upload-artifact@v1
+      with:
+        name: filtered-results
+        path: filtered_results.json
         
     # Convert Pipeline scan results to the SARFI format    
     - name: Convert pipeline scan output to SARIF format 
@@ -64,7 +68,26 @@ jobs:
         # Path to SARIF file relative to the root of the repository
         sarif_file: veracode-results.sarif
         
-    # Run a Software Composition Analysis scan
+  # Create issues from piepline scan
+  import-issues:
+    needs: build-and-security-scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: get scan results
+        uses: actions/download-artifact@v2
+        with:
+          name: filtered-results
+
+      - name: import flaws as issues
+        uses: buzzcode/veracode-flaws-to-issues@v1
+        with:
+          scan-results-json: 'filtered_results.json'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+        
+  # Run a Software Composition Analysis scan
+  software-composition-analysis:
+    runs-on: ubuntu-latest
+    steps:
     - run: curl -sSL https://download.sourceclear.com/ci.sh | bash -s scan . --update-advisor 2>&1 | tee sca_output.txt
       env:
         SRCCLR_API_TOKEN: ${{secrets.SRCCLR_API_TOKEN}}
