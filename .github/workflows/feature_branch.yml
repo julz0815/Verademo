@@ -81,14 +81,13 @@ jobs:
         with:
           app_name: 'Verademo'
           sandbox_name: 'Github - ${{ github.ref }}'
-          
       - uses: actions/upload-artifact@master
         with:
           name: flaws
-          path: fullResults.json
+          path: /home/runner/work/Verademo/Verademo/fullResults.json
       - uses: github/codeql-action/upload-sarif@v1
         with:
-          sarif_file: fullResults.json
+          sarif_file: /home/runner/work/Verademo/Verademo/fullResults.json
 
 
 # Import flaws as issues
