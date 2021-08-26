@@ -34,29 +34,29 @@ jobs:
         name: verademo.war
         path: target/verademo.war
     
-    pipeline-scan:
-      runs-on: ubuntu-latest
-      container: 
-        image: veracode/pipeline-scan:latest
-        options: --user root
-      steps:
-        - name: get archive
-          uses: actions/download-artifact@v2
-          with:
-            name: scan-target
-            path: /tmp
-        - name: pipeline-scan
-          run: | 
-            java -jar pipeline-scan.jar --veracode_api_id "${{secrets.VERACODE_API_ID}}" --veracode_api_key "${{secrets.VERACODE_API_KEY}}" --fail_on_severity="Very High, High" --file target/verademo.war -bf pipeline-basline.json -fjf filtered_results.json 
-          continue-on-error: true
-        - uses: actions/upload-artifact@v1
-          with:
-            name: PipelineScanResults
-            path: results.json
-        - uses: actions/upload-artifact@v1
-          with:
-            name: filtered-results
-            path: filtered_results.json
+  pipeline-scan:
+    runs-on: ubuntu-latest
+    container: 
+      image: veracode/pipeline-scan:latest
+      options: --user root
+    steps:
+      - name: get archive
+        uses: actions/download-artifact@v2
+        with:
+          name: scan-target
+          path: /tmp
+      - name: pipeline-scan
+        run: | 
+          java -jar pipeline-scan.jar --veracode_api_id "${{secrets.VERACODE_API_ID}}" --veracode_api_key "${{secrets.VERACODE_API_KEY}}" --fail_on_severity="Very High, High" --file target/verademo.war -bf pipeline-basline.json -fjf filtered_results.json 
+        continue-on-error: true
+      - uses: actions/upload-artifact@v1
+        with:
+          name: PipelineScanResults
+          path: results.json
+      - uses: actions/upload-artifact@v1
+        with:
+          name: filtered-results
+          path: filtered_results.json
 
 
  #     - name: scan
