@@ -96,6 +96,10 @@ jobs:
     needs: pipeline-scan
     runs-on: ubuntu-latest
     steps:  
+      - name: get scan results
+        uses: actions/download-artifact@v2
+        with:
+          name: PipelineScanResults
       - name: Convert pipeline scan output to SARIF format 
         id: convert
         uses: veracode/veracode-pipeline-scan-results-to-sarif@v0.1.5
