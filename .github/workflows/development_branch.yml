@@ -34,39 +34,68 @@ jobs:
         name: verademo.war
         path: target/verademo.war
     
-    # download the Veracode Static Analysis Pipeline scan jar
-    - uses: wei/curl@master
-      with:
-        args: -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
-    - run: unzip -o pipeline-scan-LATEST.zip
-    
-    # run the Veracode Pipeline scan
-    - uses: actions/setup-java@v1
-      with:
-        java-version: 1.8
-    - run: java -jar pipeline-scan.jar --veracode_api_id "${{secrets.VERACODE_API_ID}}" --veracode_api_key "${{secrets.VERACODE_API_KEY}}" --fail_on_severity="Very High, High" --file target/verademo.war -bf pipeline-basline.json -fjf filtered_results.json 
-      continue-on-error: true
-    - uses: actions/upload-artifact@v1
-      with:
-        name: PipelineScanResults
-        path: results.json
-    - uses: actions/upload-artifact@v1
-      with:
-        name: filtered-results
-        path: filtered_results.json
+    pipeline-scan:
+      runs-on: ubuntu-latest
+      container: 
+        image: veracode/pipeline-scan:latest
+        options: --user root
+      steps:
+        - name: get archive
+          uses: actions/download-artifact@v2
+          with:
+            name: scan-target
+            path: /tmp
+        - name: pipeline-scan
+          run: | 
+            java -jar pipeline-scan.jar --veracode_api_id "${{secrets.VERACODE_API_ID}}" --veracode_api_key "${{secrets.VERACODE_API_KEY}}" --fail_on_severity="Very High, High" --file target/verademo.war -bf pipeline-basline.json -fjf filtered_results.json 
+          continue-on-error: true
+        - uses: actions/upload-artifact@v1
+          with:
+            name: PipelineScanResults
+            path: results.json
+        - uses: actions/upload-artifact@v1
+          with:
+            name: filtered-results
+            path: filtered_results.json
+
+
+ #     - name: scan
+ #   # download the Veracode Static Analysis Pipeline scan jar
+ #   - uses: wei/curl@master
+ #     with:
+ #       args: -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+ #   - run: unzip -o pipeline-scan-LATEST.zip
+ #   
+ #   # run the Veracode Pipeline scan
+ #   - uses: actions/setup-java@v1
+ #     with:
+ #       java-version: 1.8
+ #   - run: java -jar pipeline-scan.jar --veracode_api_id "${{secrets.VERACODE_API_ID}}" --veracode_api_key "${{secrets.VERACODE_API_KEY}}" --fail_on_severity="Very High, High" --file target/verademo.war -bf pipeline-basline.json -fjf filtered_results.json 
+ #     continue-on-error: true
+ #   - uses: actions/upload-artifact@v1
+ #     with:
+ #       name: PipelineScanResults
+ #       path: results.json
+ #   - uses: actions/upload-artifact@v1
+ #     with:
+ #       name: filtered-results
+ #       path: filtered_results.json
         
-    # Convert Pipeline scan results to the SARFI format    
-    - name: Convert pipeline scan output to SARIF format 
-      id: convert
-      uses: veracode/veracode-pipeline-scan-results-to-sarif@v0.1.5
-      with:
-        pipeline-results-json: results.json
-        source-base-path-1: "^com/veracode:src/main/java/com/veracode"
-        source-base-path-2: "^WEB-INF:src/main/webapp/WEB-INF"
-    - uses: github/codeql-action/upload-sarif@v1
-      with:
-        # Path to SARIF file relative to the root of the repository
-        sarif_file: veracode-results.sarif
+    # Convert Pipeline scan results to the SARFI format  
+  import-findings-to-code-scanning-alerts:
+    runs-on: ubuntu-latest
+    steps:  
+      - name: Convert pipeline scan output to SARIF format 
+        id: convert
+        uses: veracode/veracode-pipeline-scan-results-to-sarif@v0.1.5
+        with:
+          pipeline-results-json: results.json
+          source-base-path-1: "^com/veracode:src/main/java/com/veracode"
+          source-base-path-2: "^WEB-INF:src/main/webapp/WEB-INF"
+      - uses: github/codeql-action/upload-sarif@v1
+        with:
+          # Path to SARIF file relative to the root of the repository
+          sarif_file: veracode-results.sarif
         
   # Create issues from piepline scan
   import-issues:
@@ -83,7 +112,7 @@ jobs:
         with:
           scan-results-json: 'filtered_results.json'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          
+
         
   # Run a Software Composition Analysis scan
   software-composition-analysis:
