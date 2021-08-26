@@ -49,18 +49,26 @@ jobs:
           path: /tmp
       - name: pipeline-scan
         run: | 
-          java -jar pipeline-scan.jar --vid "${{secrets.VERACODE_API_ID}}" --vkey "${{secrets.VERACODE_API_KEY}}" --fail_on_severity="Very High, High" --file /tmp/verademo.war -bf pipeline-basline.json -jf results.json -fjf filtered_results.json 
+          ls -la /opt/veracode/
+          java -jar /opt/veracode/pipeline-scan.jar \
+            -vid "${{secrets.VERACODE_API_ID}}" \
+            -vkey "${{secrets.VERACODE_API_KEY}}" \
+            --fail_on_severity="Very High, High" \
+            --file /tmp/verademo.war \
+            -bf pipeline-basline.json \
+            -jf results.json \
+            -fjf filtered_results.json 
         continue-on-error: true
       - name: save standard results
         uses: actions/upload-artifact@v1
         with:
           name: PipelineScanResults
-          path: /tmp/results.json
+          path: results.json
       - name: save filtered results
         uses: actions/upload-artifact@v1
         with:
           name: filtered-results
-          path: /tmp/filtered_results.json
+          path: filtered_results.json
 
 
  #     - name: scan
