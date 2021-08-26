@@ -83,6 +83,7 @@ jobs:
         with:
           scan-results-json: 'filtered_results.json'
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          
         
   # Run a Software Composition Analysis scan
   software-composition-analysis:
