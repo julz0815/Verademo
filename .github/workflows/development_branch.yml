@@ -57,6 +57,7 @@ jobs:
           name: PipelineScanResults
           path: /home/runner/work/Verademo/results.json
       - name: save filtered results
+        uses: actions/upload-artifact@v1
         with:
           name: filtered-results
           path: /home/runner/work/Verademo/filtered_results.json
