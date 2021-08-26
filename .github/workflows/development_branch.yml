@@ -35,6 +35,7 @@ jobs:
         path: target/verademo.war
     
   pipeline-scan:
+    needs: build
     runs-on: ubuntu-latest
     container: 
       image: veracode/pipeline-scan:latest
