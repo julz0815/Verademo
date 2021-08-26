@@ -10,9 +10,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a job to build and submit pipeline scan, you will need to customize the build process accordingly and make sure the artifact you build is used as the file input to the pipeline scan file parameter
+  # This step will build the maven application
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
     steps:
     
@@ -33,7 +32,9 @@ jobs:
       with:
         name: verademo.war
         path: target/verademo.war
-    
+        
+
+  # This step will run the Veracode pipeline scan 
   pipeline-scan:
     needs: build
     runs-on: ubuntu-latest
@@ -48,16 +49,17 @@ jobs:
           path: /tmp
       - name: pipeline-scan
         run: | 
-          java -jar pipeline-scan.jar --veracode_api_id "${{secrets.VERACODE_API_ID}}" --veracode_api_key "${{secrets.VERACODE_API_KEY}}" --fail_on_severity="Very High, High" --file target/verademo.war -bf pipeline-basline.json -jf results.json -fjf filtered_results.json 
+          java -jar /op/veracode/pipeline-scan.jar --vid "${{secrets.VERACODE_API_ID}}" --vkey "${{secrets.VERACODE_API_KEY}}" --fail_on_severity="Very High, High" --file target/verademo.war -bf pipeline-basline.json -jf results.json -fjf filtered_results.json 
+          cd /home/runner/work/Verademo/
         continue-on-error: true
       - uses: actions/upload-artifact@v1
         with:
           name: PipelineScanResults
-          path: results.json
+          path: /home/runner/work/Verademo/results.json
       - uses: actions/upload-artifact@v1
         with:
           name: filtered-results
-          path: filtered_results.json
+          path: /home/runner/work/Verademo/filtered_results.json
 
 
  #     - name: scan
