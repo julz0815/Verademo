@@ -49,13 +49,11 @@ jobs:
           path: /tmp
       - name: pipeline-scan
         run: | 
-          ls -la /opt/veracode/
           java -jar /opt/veracode/pipeline-scan.jar \
             -vid "${{secrets.VERACODE_API_ID}}" \
             -vkey "${{secrets.VERACODE_API_KEY}}" \
             --fail_on_severity="Very High, High" \
             --file /tmp/verademo.war \
-            -bf pipeline-basline.json \
             -jf results.json \
             -fjf filtered_results.json 
         continue-on-error: true
