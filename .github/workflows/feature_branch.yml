@@ -85,7 +85,7 @@ jobs:
       - uses: actions/upload-artifact@master
         with:
           name: flaws
-          path: /home/runner/work/Verademo/Verademo/fullResults.json
+          path: fullResults.json
       - uses: github/codeql-action/upload-sarif@v1
         with:
           sarif_file: fullResults.json
@@ -113,7 +113,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: policy-flaws
-          path: policy_flaws.json
+          path: /tmp/policy_flaws.json
 
 # This step will import flaws from the step above
   import-policy-flaws:
@@ -124,7 +124,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: policy-flaws
-          path: .
+          path: /tmp
 
       - name: import flaws as issues
         uses: buzzcode/veracode-flaws-to-issues@v1
