@@ -55,12 +55,12 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: PipelineScanResults
-          path: /home/runner/work/Verademo/results.json
+          path: /tmp/results.json
       - name: save filtered results
         uses: actions/upload-artifact@v1
         with:
           name: filtered-results
-          path: /home/runner/work/Verademo/filtered_results.json
+          path: /tmp/filtered_results.json
 
 
  #     - name: scan
@@ -85,7 +85,7 @@ jobs:
  #       name: filtered-results
  #       path: filtered_results.json
         
-    # Convert Pipeline scan results to the SARFI format  
+  # Convert Pipeline scan results to the SARFI format  
   import-findings-to-code-scanning-alerts:
     needs: pipeline-scan
     runs-on: ubuntu-latest
