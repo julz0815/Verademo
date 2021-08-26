@@ -51,11 +51,12 @@ jobs:
         run: | 
           java -jar /op/veracode/pipeline-scan.jar --vid "${{secrets.VERACODE_API_ID}}" --vkey "${{secrets.VERACODE_API_KEY}}" --fail_on_severity="Very High, High" --file /tmp/verademo.war -bf pipeline-basline.json -jf results.json -fjf filtered_results.json 
         continue-on-error: true
-      - name: save results
+      - name: save standard results
         uses: actions/upload-artifact@v1
         with:
           name: PipelineScanResults
           path: /home/runner/work/Verademo/results.json
+      - name: save filtered results
         with:
           name: filtered-results
           path: /home/runner/work/Verademo/filtered_results.json
