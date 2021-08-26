@@ -8,14 +8,11 @@ on:
     branches: [ development ]
 
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This step will build the maven application
   build:
     runs-on: ubuntu-latest
     steps:
-    
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it, compiles with maven and copies the .war file for submitting for analysis. Replace this section with your applications build steps
     - uses: actions/checkout@v2
     - uses: actions/setup-java@v1
       with: 
@@ -68,28 +65,6 @@ jobs:
           name: filtered-results
           path: filtered_results.json
 
-
- #     - name: scan
- #   # download the Veracode Static Analysis Pipeline scan jar
- #   - uses: wei/curl@master
- #     with:
- #       args: -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
- #   - run: unzip -o pipeline-scan-LATEST.zip
- #   
- #   # run the Veracode Pipeline scan
- #   - uses: actions/setup-java@v1
- #     with:
- #       java-version: 1.8
- #   - run: java -jar pipeline-scan.jar --veracode_api_id "${{secrets.VERACODE_API_ID}}" --veracode_api_key "${{secrets.VERACODE_API_KEY}}" --fail_on_severity="Very High, High" --file target/verademo.war -bf pipeline-basline.json -fjf filtered_results.json 
- #     continue-on-error: true
- #   - uses: actions/upload-artifact@v1
- #     with:
- #       name: PipelineScanResults
- #       path: results.json
- #   - uses: actions/upload-artifact@v1
- #     with:
- #       name: filtered-results
- #       path: filtered_results.json
         
   # Convert Pipeline scan results to the SARFI format  
   import-findings-to-code-scanning-alerts:
