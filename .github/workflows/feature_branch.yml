@@ -83,12 +83,10 @@ jobs:
           sandbox_name: 'Github - ${{ github.ref }}'
           
       - uses: actions/upload-artifact@master
-        if: ${{ failure() }}
         with:
           name: flaws
           path: /home/runner/work/Verademo/Verademo/fullResults.json
       - uses: github/codeql-action/upload-sarif@v1
-        if: ${{ failure() }}
         with:
           sarif_file: fullResults.json
 
@@ -115,7 +113,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: policy-flaws
-          path: /tmp/policy_flaws.json
+          path: policy_flaws.json
 
 # This step will import flaws from the step above
   import-policy-flaws:
@@ -126,12 +124,12 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: policy-flaws
-          path: /tmp
+          path: .
 
       - name: import flaws as issues
         uses: buzzcode/veracode-flaws-to-issues@v1
         with:
-          scan-results-json: '/tmp/policy_flaws.json'
+          scan-results-json: 'policy_flaws.json'
           github-token: ${{ secrets.GITHUB_TOKEN }}
         
   # Run a Software Composition Analysis scan
