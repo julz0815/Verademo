@@ -84,7 +84,6 @@ jobs:
           source-base-path-2: "^WEB-INF:src/main/webapp/WEB-INF"
       - uses: github/codeql-action/upload-sarif@v1
         with:
-          # Path to SARIF file relative to the root of the repository
           sarif_file: veracode-results.sarif
         
   # Create issues from piepline scan
