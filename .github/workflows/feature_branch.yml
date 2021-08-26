@@ -38,18 +38,18 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v2
- #     - name: get archive
- #       uses: actions/download-artifact@v2
- #       with:
- #         name: verademo.war
- #         path: /tmp
+      - name: get archive
+        uses: actions/download-artifact@v2
+        with:
+          name: verademo.war
+          path: .
       - name: Veracode Upload and Scan Action Step
         uses: veracode/veracode-uploadandscan-action@0.2.1
         id: upload_and_scan
         with:
           appname: 'Verademo'
           version: '${{ github.run_id }}'
-          filepath: '/home/runner/work/Verademo/Verademo/verademo.war'
+          filepath: 'verademo.war'
           vid: '${{ secrets.VERACODE_API_ID }}'
           vkey: '${{ secrets.VERACODE_API_KEY }}'
           createsandbox: true
