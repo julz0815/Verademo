@@ -126,7 +126,7 @@ jobs:
           path: /tmp
 
       - name: import flaws as issues
-        uses: buzzcode/veracode-flaws-to-issues@master
+        uses: buzzcode/veracode-flaws-to-issues@main
         with:
           scan-results-json: 'policy_flaws.json'
           github-token: ${{ secrets.GITHUB_TOKEN }}
