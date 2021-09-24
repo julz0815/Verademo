@@ -110,10 +110,13 @@ jobs:
           path: .
 
       - name: import flaws as issues
-        uses: buzzcode/veracode-flaws-to-issues@v1
+        uses: buzzcode/veracode-flaws-to-issues@master
         with:
           scan-results-json: 'policy_flaws.json'
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          source_base_path_1: "com/veracode:src/main/java/com/veracode" 
+          source_base_path_2: "WEB-INF:src/main/webapp/WEB-INF"
+          commit-hash: ${{ GITHUB.SHA }}
 
   # Run a Software Composition Analysis scan
   software-composition-analysis:
