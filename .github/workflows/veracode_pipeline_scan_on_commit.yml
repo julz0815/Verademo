@@ -3,10 +3,7 @@ name: Development Branch Workflow
 
 on:
   push:
-    branches: [ development ]
-  pull_request:
-    branches: [ development ]
-
+    branches: [ feature ]
 
 jobs:
   # This step will build the maven application
@@ -101,11 +98,15 @@ jobs:
         with:
           scan-results-json: 'filtered_results.json'
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          source_base_path_1: "com/veracode:src/main/java/com/veracode" 
+          source_base_path_2: "WEB-INF:src/main/webapp/WEB-INF"
+          commit-hash: ${{ GITHUB.SHA }}
 
         
   # Run a Software Composition Analysis scan
   software-composition-analysis:
     runs-on: ubuntu-latest
+    name: Scan repository for 3rd party issues
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-java@v1
@@ -116,9 +117,14 @@ jobs:
       with:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-    - run: curl -sSL https://download.sourceclear.com/ci.sh | bash -s scan . --update-advisor 2>&1 | tee sca_output.txt
+    - name: Run Veracode SCA
       env:
-        SRCCLR_API_TOKEN: ${{secrets.SRCCLR_API_TOKEN}}
+        SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
+      uses: lerer/veracode-sca@v1 
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        quick: false
+        create-issues: true 
     - uses: actions/upload-artifact@v1
       with:
         name: SCAScanResults
