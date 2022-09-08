@@ -129,3 +129,5 @@ jobs:
       with:
         name: SCAScanResults
         path: sca_output.txt
+
+
