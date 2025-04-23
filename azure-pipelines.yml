@@ -11,11 +11,64 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+variables:
+      system.debug: true
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+steps:
+  - task: check-run@1
+    displayName: 'Register Pipeline Status'
+    inputs:
+      veracodeKeys: $(veracodeKeys)
+      repository: $(repository)
+      veracodeScan: $(veracodeScan)
+  - task: validation@1
+    displayName: 'Validate Veracode Credentials'
+    inputs:
+      veracodeKeys: $(veracodeKeys)
+      veracodeScan: $(veracodeScan)
+  - script: |
+      git clone $(cloneUrl)
+      git -C $(repositoryName) checkout $(commitSha)
+    displayName: 'Checkout Source Repository'
+  - template: veracode-default-build.yml
+    parameters:
+      sourcePath: $(repositoryName)
+  - task: pipeline-scan@1
+    displayName: 'Pipeline Scan'
+    inputs:
+      repository: $(repository)
+      veracodeScan: $(veracodeScan)
+    condition: always()
+  - task: sca-scan@1
+    displayName: 'SCA Scan'
+    inputs:
+      repository: $(repository)
+      veracodeScan: $(veracodeScan)
+    condition: always()
+  - task: iac-scan@1
+    displayName: 'IaC Scan'
+    inputs:
+      repository: $(repository)
+      veracodeScan: $(veracodeScan)
+    condition: always()
+  - task: policy-scan@1
+    displayName: 'Policy Scan'
+    inputs:
+      repository: $(repository)
+      veracodeScan: $(veracodeScan)
+    condition: always()
+  - task: sandbox-scan@1
+    displayName: 'Sandbox Scan'
+    inputs:
+      repository: $(repository)
+      veracodeScan: $(veracodeScan)
+    condition: always()
+  - task: check-run@1
+    displayName: 'Update Pipeline Status'
+    inputs:
+      isFinalTask: true
+      veracodeKeys: $(veracodeKeys)
+      repository: $(repository)
+      veracodeScan: $(veracodeScan)
+    condition: always()
+
